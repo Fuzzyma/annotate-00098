@@ -24,40 +24,39 @@ export default function ArtistsPage() {
           );
 
           return (
-            <Card key={artist.id} className="overflow-hidden flex flex-col">
-              <div className="aspect-square relative">
-                <Image
-                  src={artist.avatar || "/placeholder.svg"}
-                  alt={artist.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <CardContent className="p-4 grow">
-                <h2 className="text-xl font-bold">{artist.name}</h2>
-                <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
-                  {artist.bio}
-                </p>
-              </CardContent>
-              <CardFooter className="p-4 pt-0 flex justify-between">
-                <div className="text-sm">
-                  <span className="font-medium">{artworks.length}</span>{" "}
-                  artworks
+            <Link key={artist.id} href={`/artists/${artist.id}`}>
+              <Card
+                key={artist.id}
+                className="overflow-hidden flex flex-col transition-shadow duration-200 hover:shadow-lg"
+              >
+                <div className="aspect-square relative">
+                  <Image
+                    src={artist.avatar || "/placeholder.svg"}
+                    alt={artist.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <div className="text-sm">
-                  <span className="font-medium">
-                    {totalUpvotes - totalDownvotes}
-                  </span>{" "}
-                  rating
-                </div>
-                <Link
-                  href={`/artists/${artist.id}`}
-                  className="text-sm text-primary hover:underline"
-                >
-                  View Profile
-                </Link>
-              </CardFooter>
-            </Card>
+                <CardContent className="p-4 grow">
+                  <h2 className="text-xl font-bold">{artist.name}</h2>
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
+                    {artist.bio}
+                  </p>
+                </CardContent>
+                <CardFooter className="p-4 pt-0 flex justify-between">
+                  <div className="text-sm">
+                    <span className="font-medium">{artworks.length}</span>{" "}
+                    artworks
+                  </div>
+                  <div className="text-sm">
+                    <span className="font-medium">
+                      {totalUpvotes - totalDownvotes}
+                    </span>{" "}
+                    rating
+                  </div>
+                </CardFooter>
+              </Card>
+            </Link>
           );
         })}
       </div>

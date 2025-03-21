@@ -34,6 +34,8 @@ export default function ArtistPage() {
     deleteArtwork,
     getArtworkById,
     recoverArtwork,
+    upvoteArtwork,
+    downvoteArtwork,
   } = useArt();
 
   const { toast } = useToast();
@@ -125,11 +127,6 @@ export default function ArtistPage() {
               <div className="text-sm text-muted-foreground">Downvotes</div>
             </div>
           </div>
-          <div className="flex items-center">
-            <Link href="/" className="text-primary hover:underline">
-              Back to Home
-            </Link>
-          </div>
         </div>
       </div>
       {artworks.length > 0 ? (
@@ -158,11 +155,25 @@ export default function ArtistPage() {
                 <CardFooter className="p-4 pt-0 flex justify-between">
                   <div className="flex items-center space-x-2">
                     <div className="flex items-center">
-                      <ThumbsUp className="h-4 w-4 mr-1" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => upvoteArtwork(artwork.id)}
+                        aria-label="Upvote"
+                      >
+                        <ThumbsUp className="h-4 w-4" />
+                      </Button>
                       <span className="text-sm">{artwork.upvotes}</span>
                     </div>
                     <div className="flex items-center">
-                      <ThumbsDown className="h-4 w-4 mr-1" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => downvoteArtwork(artwork.id)}
+                        aria-label="Downvote"
+                      >
+                        <ThumbsDown className="h-4 w-4" />
+                      </Button>
                       <span className="text-sm">{artwork.downvotes}</span>
                     </div>
                   </div>
