@@ -97,7 +97,11 @@ export function CommentSection({ artworkId, comments }: CommentSectionProps) {
           onChange={(e) => setNewComment(e.target.value)}
           className="min-h-[80px]"
         />
-        <Button type="submit" disabled={!newComment.trim()}>
+        <Button
+          type="submit"
+          disabled={!newComment.trim()}
+          className="w-full sm:w-36"
+        >
           Post Comment
         </Button>
       </form>
@@ -133,7 +137,7 @@ export function CommentSection({ artworkId, comments }: CommentSectionProps) {
               ) : (
                 <>
                   <p className="mb-2">{comment.text}</p>
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-wrap justify-between items-center">
                     <div className="text-xs text-muted-foreground">
                       {new Date(comment.createdAt).toLocaleDateString()}
                       {comment.updatedAt && " (edited)"}

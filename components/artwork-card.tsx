@@ -95,11 +95,11 @@ export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
           <p className="mt-4">{artwork.description}</p>
         </div>
       </div>
-      <CardFooter className="flex justify-between p-2 border-t">
+      <CardFooter className="flex justify-between py-4 px-6 border-t">
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 grow sm:grow-0"
           onClick={() => setShowComments(!showComments)}
         >
           <MessageSquare className="h-4 w-4" />
