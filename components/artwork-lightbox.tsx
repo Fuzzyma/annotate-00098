@@ -47,6 +47,9 @@ export function ArtworkLightbox({
               alt={artwork.title}
               fill
               className="object-contain"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.svg";
+              }}
             />
           </div>
           <div>

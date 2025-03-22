@@ -35,10 +35,7 @@ import { useToast } from "@/hooks/use-toast";
 const artworkSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  imageUrl: z
-    .string()
-    .url("Must be a valid URL")
-    .or(z.string().min(1, "Image URL is required")),
+  imageUrl: z.string().url("Must be a valid URL"),
   artistId: z.string().min(1, "Artist is required"),
   medium: z.string().min(1, "Medium is required"),
   year: z.coerce

@@ -55,6 +55,9 @@ export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
               alt={artwork.title}
               fill
               className="object-cover"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.svg";
+              }}
             />
           </div>
         </div>

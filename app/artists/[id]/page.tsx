@@ -114,6 +114,9 @@ export default function ArtistPage() {
               alt={artist.name}
               fill
               className="object-cover rounded-lg"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.svg";
+              }}
             />
           </div>
         </div>
@@ -151,6 +154,9 @@ export default function ArtistPage() {
                     alt={artwork.title}
                     fill
                     className="object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
                   />
                 </div>
                 <CardContent className="p-4">

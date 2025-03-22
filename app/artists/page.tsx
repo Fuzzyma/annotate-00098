@@ -35,6 +35,9 @@ export default function ArtistsPage() {
                     alt={artist.name}
                     fill
                     className="object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
                   />
                 </div>
                 <CardContent className="p-4 grow">

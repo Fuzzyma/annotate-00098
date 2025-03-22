@@ -43,7 +43,10 @@ interface ArtContextType {
   artists: Artist[];
   comments: Comment[];
   addArtwork: (
-    artwork: Omit<Artwork, "id" | "createdAt" | "upvotes" | "downvotes">
+    artwork: Omit<
+      Artwork,
+      "id" | "createdAt" | "upvotes" | "downvotes" | "vote"
+    >
   ) => void;
   updateArtwork: (id: string, artwork: Partial<Artwork>) => void;
   deleteArtwork: (id: string) => void;
@@ -198,7 +201,10 @@ export function ArtProvider({ children }: { children: ReactNode }) {
   }, [artworks, artists, comments]);
 
   const addArtwork = (
-    artwork: Omit<Artwork, "id" | "createdAt" | "upvotes" | "downvotes">
+    artwork: Omit<
+      Artwork,
+      "id" | "createdAt" | "upvotes" | "downvotes" | "vote"
+    >
   ) => {
     const newArtwork: Artwork = {
       ...artwork,
