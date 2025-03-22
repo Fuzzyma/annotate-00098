@@ -18,8 +18,9 @@ import {
   type Comment,
   useArt,
 } from "@/context/art-context";
-import { CommentSection } from "./comment-section";
-import { ArtworkLightbox } from "./artwork-lightbox";
+import { CommentSection } from "@/components/comment-section";
+import { ArtworkLightbox } from "@/components/artwork-lightbox";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -28,9 +29,18 @@ interface ArtworkCardProps {
 }
 
 export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
-  const { upvoteArtwork, downvoteArtwork } = useArt();
+  const { updateVote } = useArt();
   const [showComments, setShowComments] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const handleVote = (
+    artworkId: string,
+    voteType: "upvote" | "downvote" | undefined
+  ) => {
+    updateVote(artworkId, voteType);
+  };
+
+  console.log(artwork.vote);
 
   return (
     <Card className="mb-6 overflow-hidden">
@@ -39,7 +49,7 @@ export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
           className="md:w-1/2 relative cursor-pointer"
           onClick={() => setLightboxOpen(true)}
         >
-          <div className="aspect-[4/3] relative">
+          <div className="w-full h-full relative aspect-[4/3]">
             <Image
               src={artwork.imageUrl || "/placeholder.svg"}
               alt={artwork.title}
@@ -49,7 +59,7 @@ export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
           </div>
         </div>
         <div className="md:w-1/2 p-6">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start justify-between">
             <div>
               <h2 className="text-2xl font-bold">{artwork.title}</h2>
               <div className="mt-1 mb-3">
@@ -64,26 +74,20 @@ export function ArtworkCard({ artwork, artist, comments }: ArtworkCardProps) {
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => upvoteArtwork(artwork.id)}
-                aria-label="Upvote"
-              >
+            <ToggleGroup
+              type="single"
+              onValueChange={(val) => handleVote(artwork.id, val as any)}
+              value={artwork.vote}
+            >
+              <ToggleGroupItem aria-label="Upvote" value="upvote">
                 <ThumbsUp className="h-5 w-5" />
-              </Button>
+              </ToggleGroupItem>
               <span className="text-sm font-medium">{artwork.upvotes}</span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => downvoteArtwork(artwork.id)}
-                aria-label="Downvote"
-              >
+              <ToggleGroupItem aria-label="Downvote" value="downvote">
                 <ThumbsDown className="h-5 w-5" />
-              </Button>
+              </ToggleGroupItem>
               <span className="text-sm font-medium">{artwork.downvotes}</span>
-            </div>
+            </ToggleGroup>
           </div>
           <p className="mt-4">{artwork.description}</p>
         </div>

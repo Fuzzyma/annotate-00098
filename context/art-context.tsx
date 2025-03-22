@@ -35,6 +35,7 @@ export interface Artwork {
   upvotes: number;
   downvotes: number;
   createdAt: string;
+  vote: "upvote" | "downvote" | undefined;
 }
 
 interface ArtContextType {
@@ -49,8 +50,7 @@ interface ArtContextType {
   addComment: (comment: Omit<Comment, "id" | "createdAt">) => void;
   updateComment: (id: string, text: string) => void;
   deleteComment: (id: string) => void;
-  upvoteArtwork: (id: string) => void;
-  downvoteArtwork: (id: string) => void;
+  updateVote: (id: string, val: "upvote" | "downvote" | undefined) => void;
   getArtworkById: (id: string) => Artwork | undefined;
   recoverArtwork: (artwork: Artwork) => void;
   getArtistById: (id: string) => Artist | undefined;
@@ -95,6 +95,7 @@ const initialArtworks: Artwork[] = [
     upvotes: 120,
     downvotes: 5,
     createdAt: new Date().toISOString(),
+    vote: undefined,
   },
   {
     id: "2",
@@ -108,6 +109,7 @@ const initialArtworks: Artwork[] = [
     upvotes: 95,
     downvotes: 8,
     createdAt: new Date().toISOString(),
+    vote: undefined,
   },
   {
     id: "3",
@@ -121,6 +123,7 @@ const initialArtworks: Artwork[] = [
     upvotes: 110,
     downvotes: 3,
     createdAt: new Date().toISOString(),
+    vote: undefined,
   },
   {
     id: "4",
@@ -134,6 +137,7 @@ const initialArtworks: Artwork[] = [
     upvotes: 130,
     downvotes: 7,
     createdAt: new Date().toISOString(),
+    vote: undefined,
   },
 ];
 
@@ -202,6 +206,7 @@ export function ArtProvider({ children }: { children: ReactNode }) {
       upvotes: 0,
       downvotes: 0,
       createdAt: new Date().toISOString(),
+      vote: undefined,
     };
     setArtworks([...artworks, newArtwork]);
   };
@@ -247,21 +252,29 @@ export function ArtProvider({ children }: { children: ReactNode }) {
     setComments(comments.filter((comment) => comment.id !== id));
   };
 
-  const upvoteArtwork = (id: string) => {
-    setArtworks(
-      artworks.map((artwork) =>
-        artwork.id === id
-          ? { ...artwork, upvotes: artwork.upvotes + 1 }
-          : artwork
-      )
-    );
-  };
+  const updateVote = (id: string, vote: "upvote" | "downvote" | undefined) => {
+    const artwork = getArtworkById(id);
+    if (!artwork) return;
 
-  const downvoteArtwork = (id: string) => {
+    let { vote: oldVote, upvotes, downvotes } = artwork;
+
+    // Undo previous vote
+    if (oldVote === "upvote") upvotes--;
+    if (oldVote === "downvote") downvotes--;
+
+    // Apply new vote
+    if (vote === "upvote") upvotes++;
+    if (vote === "downvote") downvotes++;
+
     setArtworks(
       artworks.map((artwork) =>
         artwork.id === id
-          ? { ...artwork, downvotes: artwork.downvotes + 1 }
+          ? {
+              ...artwork,
+              upvotes,
+              downvotes,
+              vote,
+            }
           : artwork
       )
     );
@@ -303,8 +316,7 @@ export function ArtProvider({ children }: { children: ReactNode }) {
         addComment,
         updateComment,
         deleteComment,
-        upvoteArtwork,
-        downvoteArtwork,
+        updateVote,
         getArtworkById,
         recoverArtwork,
         getArtistById,

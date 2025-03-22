@@ -22,6 +22,7 @@ import { ArtworkLightbox } from "@/components/artwork-lightbox";
 import { ArtworkDialog } from "@/components/artwork-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function ArtistPage() {
   const params = useParams();
@@ -34,8 +35,7 @@ export default function ArtistPage() {
     deleteArtwork,
     getArtworkById,
     recoverArtwork,
-    upvoteArtwork,
-    downvoteArtwork,
+    updateVote,
   } = useArt();
 
   const { toast } = useToast();
@@ -97,6 +97,13 @@ export default function ArtistPage() {
     (artwork) => artwork.id === lightboxArtwork
   );
 
+  const handleVote = (
+    artworkId: string,
+    voteType: "upvote" | "downvote" | undefined
+  ) => {
+    updateVote(artworkId, voteType);
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -154,28 +161,26 @@ export default function ArtistPage() {
                 </CardContent>
                 <CardFooter className="p-4 pt-0 flex justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="flex items-center">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => upvoteArtwork(artwork.id)}
-                        aria-label="Upvote"
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                      </Button>
-                      <span className="text-sm">{artwork.upvotes}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => downvoteArtwork(artwork.id)}
-                        aria-label="Downvote"
-                      >
-                        <ThumbsDown className="h-4 w-4" />
-                      </Button>
-                      <span className="text-sm">{artwork.downvotes}</span>
-                    </div>
+                    <ToggleGroup
+                      type="single"
+                      value={artwork.vote}
+                      onValueChange={(val) =>
+                        handleVote(artwork.id, val as any)
+                      }
+                    >
+                      <ToggleGroupItem aria-label="Upvote" value="upvote">
+                        <ThumbsUp className="h-5 w-5" />
+                      </ToggleGroupItem>
+                      <span className="text-sm font-medium">
+                        {artwork.upvotes}
+                      </span>
+                      <ToggleGroupItem aria-label="Downvote" value="downvote">
+                        <ThumbsDown className="h-5 w-5" />
+                      </ToggleGroupItem>
+                      <span className="text-sm font-medium">
+                        {artwork.downvotes}
+                      </span>
+                    </ToggleGroup>
                   </div>
                   <div className="flex gap-2">
                     <Button
